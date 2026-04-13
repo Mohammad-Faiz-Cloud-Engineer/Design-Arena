@@ -95,6 +95,7 @@ body {
 .refresh-btn svg {
   width: 14px;
   height: 14px;
+  transition: transform 0.3s ease;
 }
 
 .refresh-btn:hover {
@@ -107,6 +108,25 @@ body {
   transition-duration: 0.1s;
 }
 
+/* Redirect mode styling */
+.refresh-btn.redirect-mode {
+  background-color: rgba(26, 115, 232, 0.9);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.refresh-btn.redirect-mode:hover {
+  background-color: rgba(26, 115, 232, 1);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 2px 16px rgba(26, 115, 232, 0.6);
+  }
+}
+
 @media (prefers-color-scheme: light) {
   .refresh-btn {
     background-color: rgba(255, 255, 255, 0.9);
@@ -115,6 +135,15 @@ body {
   
   .refresh-btn:hover {
     background-color: rgba(255, 255, 255, 1);
+  }
+  
+  .refresh-btn.redirect-mode {
+    background-color: rgba(26, 115, 232, 0.9);
+    color: #ffffff;
+  }
+  
+  .refresh-btn.redirect-mode:hover {
+    background-color: rgba(26, 115, 232, 1);
   }
 }
 
