@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src https://designarena.ai https://*.designarena.ai; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src https://designarena.ai https://*.designarena.ai;">
+  <meta name="description" content="Design Arena - Professional Chrome Extension for Design Arena">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="color-scheme" content="light dark">
+  <title>Design Arena</title>
+  <style>
+    /* Critical CSS - Inline to prevent FOUC */
+    body { margin: 0; padding: 0; overflow: hidden; }
+    .container { height: 100vh; width: 100%; position: relative; }
+    .loading-overlay { 
+      position: absolute; 
+      inset: 0; 
+      background: #fff; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      z-index: 999;
+    }
+    @media (prefers-color-scheme: dark) {
+      .loading-overlay { background: #202124; }
+    }
+  </style>
+  <link rel="stylesheet" href="styles/reset.css">
+  <link rel="stylesheet" href="styles/sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <div class="iframe-wrapper">
+      <button class="refresh-btn" id="refreshBtn" aria-label="Refresh Design Arena" aria-describedby="refreshDescription" title="Refresh" type="button">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13.65 2.35C12.2 0.9 10.21 0 8 0 3.58 0 0.01 3.58 0.01 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/>
+        </svg>
+        <span id="refreshDescription" class="sr-only">Click to reload Design Arena interface</span>
+      </button>
+      <iframe 
+        id="arenaFrame" 
+        src="https://designarena.ai/" 
+        title="Design Arena - AI Chat Interface"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"
+        allow="clipboard-read; clipboard-write"
+        loading="eager"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      <div class="loading-overlay" id="loadingOverlay" role="status" aria-live="polite" aria-describedby="loadingDescription">
+        <div class="spinner" aria-hidden="true"></div>
+        <p class="loading-text" id="loadingDescription">Loading Design Arena...</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="scripts/main.js"></script>
+</body>
+</html>
