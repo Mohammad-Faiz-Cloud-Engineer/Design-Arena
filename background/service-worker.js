@@ -13,7 +13,6 @@ import {
   ERROR_MESSAGES,
   SUCCESS_MESSAGES,
   CONTEXT_MENU_IDS,
-  PROMPT_TEMPLATES,
   ACTION_STORAGE_KEYS
 } from '../utils/constants.js';
 
@@ -84,10 +83,10 @@ const sanitizeSelection = (text) => {
 };
 
 /**
- * Creates a prompt based on the action type
- * @param {string} action - Action type (summarize, explain, rewrite)
+ * Creates a prompt from selected text
+ * @param {string} action - Action type (not used, kept for compatibility)
  * @param {string} selectedText - User's selected text
- * @returns {string} Formatted prompt
+ * @returns {string} Sanitized text
  */
 const createPrompt = (action, selectedText) => {
   const sanitized = sanitizeSelection(selectedText);
@@ -95,13 +94,7 @@ const createPrompt = (action, selectedText) => {
     return '';
   }
 
-  const template = PROMPT_TEMPLATES[action];
-  if (!template) {
-    logger.warn('Unknown action type:', action);
-    return sanitized;
-  }
-
-  return template + sanitized;
+  return sanitized;
 };
 
 /**
@@ -245,7 +238,7 @@ const openSidePanel = async ({ tabId, windowId }) => {
 };
 
 /**
- * Handles text selection actions (summarize, explain, rewrite)
+ * Handles text selection actions
  * @param {string} action - Action type
  * @param {string} selectedText - Selected text from the page
  * @param {Object} tabInfo - Tab information with tabId and windowId
@@ -366,50 +359,10 @@ const createContextMenus = () => {
         contexts: ['all']
       });
 
-      // Menu 2: Design Arena Tools (parent - only when text selected)
+      // Menu 2: Use this text (only when text selected)
       chrome.contextMenus.create({
-        id: CONTEXT_MENU_IDS.ARENA_TOOLS,
-        title: 'Design Arena Tools',
-        contexts: ['selection']
-      });
-
-      // Child: Summarize
-      chrome.contextMenus.create({
-        id: CONTEXT_MENU_IDS.SUMMARIZE,
-        parentId: CONTEXT_MENU_IDS.ARENA_TOOLS,
-        title: 'Summarize',
-        contexts: ['selection']
-      });
-
-      // Child: Explain
-      chrome.contextMenus.create({
-        id: CONTEXT_MENU_IDS.EXPLAIN,
-        parentId: CONTEXT_MENU_IDS.ARENA_TOOLS,
-        title: 'Explain',
-        contexts: ['selection']
-      });
-
-      // Child: Rewrite
-      chrome.contextMenus.create({
-        id: CONTEXT_MENU_IDS.REWRITE,
-        parentId: CONTEXT_MENU_IDS.ARENA_TOOLS,
-        title: 'Rewrite',
-        contexts: ['selection']
-      });
-
-      // Child: Quiz Me
-      chrome.contextMenus.create({
-        id: CONTEXT_MENU_IDS.QUIZ_ME,
-        parentId: CONTEXT_MENU_IDS.ARENA_TOOLS,
-        title: 'Quiz Me',
-        contexts: ['selection']
-      });
-
-      // Child: Proofread
-      chrome.contextMenus.create({
-        id: CONTEXT_MENU_IDS.PROOFREAD,
-        parentId: CONTEXT_MENU_IDS.ARENA_TOOLS,
-        title: 'Proofread',
+        id: CONTEXT_MENU_IDS.USE_TEXT,
+        title: 'Use this text',
         contexts: ['selection']
       });
 
@@ -482,24 +435,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         logger.info('Side panel opened via context menu');
         break;
 
-      case CONTEXT_MENU_IDS.SUMMARIZE:
-        await handleTextAction('summarize', selectionText, tabInfo);
-        break;
-
-      case CONTEXT_MENU_IDS.EXPLAIN:
-        await handleTextAction('explain', selectionText, tabInfo);
-        break;
-
-      case CONTEXT_MENU_IDS.REWRITE:
-        await handleTextAction('rewrite', selectionText, tabInfo);
-        break;
-
-      case CONTEXT_MENU_IDS.QUIZ_ME:
-        await handleTextAction('quizMe', selectionText, tabInfo);
-        break;
-
-      case CONTEXT_MENU_IDS.PROOFREAD:
-        await handleTextAction('proofread', selectionText, tabInfo);
+      case CONTEXT_MENU_IDS.USE_TEXT:
+        await handleTextAction('useText', selectionText, tabInfo);
         break;
 
       default:

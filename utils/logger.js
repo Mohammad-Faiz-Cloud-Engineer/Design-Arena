@@ -1,5 +1,5 @@
 /**
- * Production Logger Utility
+ * Logger Utility
  * Conditional logging based on environment with performance optimization
  * @module logger
  * @author Mohammad Faiz

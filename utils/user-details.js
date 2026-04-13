@@ -1,6 +1,6 @@
 /**
  * User Details Management Module
- * Handles user data with professional error handling and validation
+ * Handles user data with error handling and validation
  * @module user-details
  * @author Mohammad Faiz
  * @version 1.4.0

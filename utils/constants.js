@@ -12,24 +12,7 @@
  */
 export const CONTEXT_MENU_IDS = Object.freeze({
   OPEN_COMPANION: 'openDesignArena',
-  ARENA_TOOLS: 'designArenaTools',
-  SUMMARIZE: 'summarize',
-  EXPLAIN: 'explain',
-  REWRITE: 'rewrite',
-  QUIZ_ME: 'quizMe',
-  PROOFREAD: 'proofread'
-});
-
-/**
- * Prompt templates for text actions
- * @readonly
- */
-export const PROMPT_TEMPLATES = Object.freeze({
-  summarize: 'Please summarize the selection using precise and concise language. Use headers and bulleted lists in the summary, to make it scannable. Maintain the meaning and factual accuracy.\n\n',
-  explain: 'Explain this concept in simple terms:\n\n',
-  rewrite: 'Rewrite and improve the following text:\n\n',
-  quizMe: 'Please quiz me on this selection. Ask me a variety of types of questions, for example multiple choice, true or false, and short answer. Wait for my response before moving on to the next question.\n\n',
-  proofread: 'Please proofread the selection for spelling and grammar errors. Identify any mistakes and provide a corrected version of the text. Maintain the meaning and factual accuracy and output the list of proposed corrections first, followed by the final, corrected version of the text.\n\n'
+  USE_TEXT: 'useText'
 });
 
 /**

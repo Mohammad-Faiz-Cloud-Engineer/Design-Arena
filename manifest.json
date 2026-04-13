@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Design Arena",
   "version": "1.4.0",
-  "description": "Professional Chrome Extension for seamless Design Arena integration in your browser's side panel",
+  "description": "Build projects with AI using prompts. Design Arena in your browser's side panel - select any text and send it directly to start creating.",
   "author": "Mohammad Faiz",
   "icons": {
     "16": "icons/png/icon16.png",
