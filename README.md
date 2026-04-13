@@ -163,7 +163,7 @@ Security is important. Please read [SECURITY.md](SECURITY.md) for our security p
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) file for details.
+BSD-2-Clause license - See [LICENSE](LICENSE) file for details.
 
 ## Support
 
