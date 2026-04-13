@@ -1,5 +1,13 @@
 # Design Arena
 
+<p align="center">
+  <img src="icons/png/icon128.png" alt="Design Arena Logo" width="128" height="128">
+</p>
+
+<p align="center">
+  <strong>Build projects with AI using prompts</strong>
+</p>
+
 **Version:** 1.4.0
 
 [![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)](https://github.com/Mohammad-Faiz-Cloud-Engineer/design-arena)
