@@ -205,24 +205,112 @@ const handleMessage = (message, _sender, sendResponse) => {
 // REFRESH BUTTON
 // ============================================================================
 
+let hoverTimer = null;
+let isRedirectMode = false;
+
 /**
- * Initializes refresh button with keyboard support
+ * Opens Design Arena in a new tab
+ */
+const openInNewTab = () => {
+  chrome.tabs.create({ url: CONFIG.ARENA_URL });
+  logger.info('Opened Design Arena in new tab');
+};
+
+/**
+ * Switches button to redirect mode
+ */
+const switchToRedirectMode = () => {
+  if (!refreshBtn || isRedirectMode) return;
+  
+  isRedirectMode = true;
+  refreshBtn.classList.add('redirect-mode');
+  refreshBtn.setAttribute('aria-label', 'Open Design Arena in new tab');
+  refreshBtn.setAttribute('title', 'Open in new tab');
+  
+  // Update SVG icon to external link icon
+  refreshBtn.innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M9 2L9 3L12.3 3L6 9.3L6.7 10L13 3.7L13 7L14 7L14 2L9 2ZM3 3C2.4 3 2 3.4 2 4L2 13C2 13.6 2.4 14 3 14L12 14C12.6 14 13 13.6 13 13L13 9L12 9L12 13L3 13L3 4L7 4L7 3L3 3Z" fill="currentColor"/>
+    </svg>
+    <span id="refreshDescription" class="sr-only">Click to open Design Arena in new tab</span>
+  `;
+  
+  logger.debug('Switched to redirect mode');
+};
+
+/**
+ * Switches button back to refresh mode
+ */
+const switchToRefreshMode = () => {
+  if (!refreshBtn || !isRedirectMode) return;
+  
+  isRedirectMode = false;
+  refreshBtn.classList.remove('redirect-mode');
+  refreshBtn.setAttribute('aria-label', 'Refresh Design Arena');
+  refreshBtn.setAttribute('title', 'Refresh');
+  
+  // Restore refresh icon
+  refreshBtn.innerHTML = `
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M13.65 2.35C12.2 0.9 10.21 0 8 0 3.58 0 0.01 3.58 0.01 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/>
+    </svg>
+    <span id="refreshDescription" class="sr-only">Click to reload Design Arena interface</span>
+  `;
+  
+  logger.debug('Switched to refresh mode');
+};
+
+/**
+ * Handles button click based on current mode
+ */
+const handleButtonClick = () => {
+  if (isRedirectMode) {
+    openInNewTab();
+  } else {
+    refreshArenaFrame();
+  }
+};
+
+/**
+ * Initializes refresh button with keyboard support and hover functionality
  */
 const initializeRefreshButton = () => {
   if (!refreshBtn) return;
 
-  refreshBtn.addEventListener('click', refreshArenaFrame, { passive: true });
+  // Click handler
+  refreshBtn.addEventListener('click', handleButtonClick, { passive: true });
 
+  // Keyboard support
   refreshBtn.addEventListener(
     'keydown',
     (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        refreshArenaFrame();
+        handleButtonClick();
       }
     },
     { passive: false }
   );
+
+  // Hover to switch to redirect mode (after 1 second)
+  refreshBtn.addEventListener('mouseenter', () => {
+    hoverTimer = setTimeout(() => {
+      switchToRedirectMode();
+    }, 1000); // 1 second hover delay
+  });
+
+  // Mouse leave - cancel timer or switch back
+  refreshBtn.addEventListener('mouseleave', () => {
+    if (hoverTimer) {
+      clearTimeout(hoverTimer);
+      hoverTimer = null;
+    }
+    
+    // Switch back to refresh mode after a short delay
+    setTimeout(() => {
+      switchToRefreshMode();
+    }, 300);
+  });
 };
 
 // ============================================================================
